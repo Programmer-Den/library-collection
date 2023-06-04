@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Библиотека. Коллекция</title>
+    <style>
+      #library, #collection {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(48vw, 1fr) );
+        grid-template-rows:    repeat(auto-fit, minmax(2rem, 1fr) );
+      }
+      .slots {
+        text-align: center;
+        overflow: auto;
+        border: 1.5px solid skyblue;
+        font-size: 1.7rem;
+        background-color: lawngreen;
+        color: blue;
+        cursor: grab;
+        user-select: all;
+      }
+      .slots::selection {
+        background-color: gold;
+      } 
+
+      body {
+        margin: 0;
+        display: flex;
+        background-color: skyblue;
+      }
+      body > div {
+        flex-direction: column;
+        width: 50vw;
+      }
+      body > div > div {
+        display: flex;
+        background-color: blue;
+      }
+
+      button {
+        cursor: pointer;
+        font-family: serif, Georgia, 'Times New Roman', Times;
+        background-color: lightgreen;
+        color: azure;
+        border: 0;
+        height: 6.5vw;
+        width: 24vw;
+        font-size: 3.1vw;
+        font-weight: 700;
+        letter-spacing: 0.33vw;
+      }
+      span {
+        letter-spacing: 1vw;
+        align-self: center;
+        text-align: center;
+        font-family: serif; 
+        color: gold;
+        font-size: 4vw;
+        font-weight: 1000;
+        width: 24vw;
+        height: 10vh;
+        font-variant: small-caps;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <div>
+        <button type="button" onclick="promptAddBook()">Добавить</button>
+
+        <span>&nbsp;Книги</span>
+      </div>
+      <div id="library"></div>
+    </div>
+    <div>
+      <div>
+        <button type="button" onclick="promptAddFilm()">Добавить</button>
+        
+        <span>&nbsp;Фильмы</span>
+      </div>
+      <div id="collection"></div>
+    </div>
+    <script>
+      const books = [],  library    = document.querySelector('#library'),
+            films = [],  collection = document.querySelector('#collection');
+
+      function add(works, place, work) {
+        const slot = document.createElement('div');
+
+        place.appendChild(slot);
+
+        slot.textContent = work.info();
+
+        slot.classList.add('slots');
+      }
+
+      function promptAddBook() {
+        let book   = prompt('Название книги:') ?? 'ничего';
+        let author = prompt('Имя автора:')     ?? 'ничего';
+
+        appendBook(book, author);
+
+        add(books, library, books.at(-1) );
+      }
+
+      function promptAddFilm() {
+        let film = prompt('Название фильма:') ?? 'ничего';
+        let year = prompt('Год выпуска:')     ?? 'ничего';
+
+        appendFilm(film, year);
+
+        add(films, collection, films.at(-1) );
+      }
+      
+      function Book(book, author) {
+        this.book   = book;
+        this.author = author;
+      }
+      Book.prototype.info = function() { // if it was arrow function here,
+        return `${this.book} © ${this.author}` // there would be undefined
+      };                                 // (as 'this' would be in global)
+      function appendBook(book, author) {
+        books.push(new Book(book, author) );
+      }
+      
+      function Film(film, year) {
+        this.film = film;
+        this.year = year;
+      }
+      Film.prototype.info = function() { // if it was arrow function here,
+        return `${this.film} ~ (${this.year})` // there would be undefined
+      };                                 // (as 'this' would be in global)
+      function appendFilm(film, year) {
+        films.push(new Film(film, year) );
+      }      
+
+      appendBook('Научный материализм',                             'Торвальд Олафсен');
+      appendBook('Код. Тайный язык информатики',                    'Чарльз Петцольд');
+      appendBook('Самый богатый человек в Вавилоне',                'Джордж Клейсон');
+      appendBook('Квадрант денежного потока',                       'Роберт Кийосаки');
+      appendBook('Как завоевать друзей и расположить к себе людей', 'Дейл Карнеги');
+      appendBook('Принцип сперматозоида & Психологическое айкидо',  'Михаил Литвак');
+      appendBook('Психологический рисунок личности',                'Аркадий Эгидес');
+      appendBook('Язык телодвижений & Язык письма',                 'Аллан и Барбара Пиз');
+      appendBook('На краю Ойкумены & Туманность Андромеды',         'Иван Ефремов');
+      appendBook('Повесть о настоящем человеке',                    'Борис Полевой');
+      appendBook('Монах, который продал свой Феррари',              'Робин Шарма');
+      appendBook('Человек-оружие & Искусство доминировать',         'Борис Полевой');
+      appendBook('Будосёсинсю',                                     'Юдзан Дайдодзи');
+      appendBook('Сокрытое в листве, Хагакурэ',                     'Ямамото Цунэтомо');
+      appendBook('Книга 5 колец',                                   'Миямото Мусаси');
+      
+      for (let book of books) add(books, library, book);
+
+      appendFilm('Последний самурай',      2003);
+      appendFilm('Михайло Ломоносов',      1986); 
+      appendFilm('Брат Баджранги',         2015);
+      appendFilm('17 мгновений весны',     1973); 
+      appendFilm('Искупление Шоўшенка',    1994); 
+      appendFilm('Гладиатор',              2000);
+      appendFilm('Облачный атлас',         2012);
+      appendFilm('11.22.63',               2016);
+      appendFilm('12 разгневанных мужчин', 1957);
+      appendFilm('ПиКей',                  2014);
+      appendFilm('Исход: цари и боги',     2014);
+      appendFilm('Султан Бейбарс',         1989);
+      appendFilm('Форрест Гамп',           1994); 
+      appendFilm('30-ого уничтожить',      1992);
+      appendFilm('Апокалипсис',            2006); 
+      
+      for (let film of films) add(films, collection, film);
+    </script>
+  </body>
+</html>
