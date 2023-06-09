@@ -68,7 +68,6 @@
     <div>
       <div>
         <button type="button" onclick="promptAddBook()">Добавить</button>
-
         <span>&nbsp;Книги</span>
       </div>
       <div id="library"></div>
@@ -76,7 +75,6 @@
     <div>
       <div>
         <button type="button" onclick="promptAddFilm()">Добавить</button>
-        
         <span>&nbsp;Фильмы</span>
       </div>
       <div id="collection"></div>
@@ -113,27 +111,23 @@
         add(films, collection, films.at(-1) );
       }
       
-      function Book(book, author) {
-        this.book   = book;
-        this.author = author;
+      class Book {
+        constructor(book, author) {
+          this.book   = book;
+          this.author = author;
+        }
+        info = () => `${this.book} © ${this.author}`;
       }
-      Book.prototype.info = function() { // if it was arrow function here,
-        return `${this.book} © ${this.author}` // there would be undefined
-      };                                 // (as 'this' would be in global)
-      function appendBook(book, author) {
-        books.push(new Book(book, author) );
+      function appendBook(book, author) { books.push(new Book(book, author) ) }
+
+      class Film {
+        constructor(film, year) {
+          this.film = film;
+          this.year = year;
+        }
+        info = () => `${this.film} ~ (${this.year})`;
       }
-      
-      function Film(film, year) {
-        this.film = film;
-        this.year = year;
-      }
-      Film.prototype.info = function() { // if it was arrow function here,
-        return `${this.film} ~ (${this.year})` // there would be undefined
-      };                                 // (as 'this' would be in global)
-      function appendFilm(film, year) {
-        films.push(new Film(film, year) );
-      }      
+      function appendFilm(film, year) { films.push(new Film(film, year) ) }
 
       appendBook('Научный материализм',                             'Торвальд Олафсен');
       appendBook('Код. Тайный язык информатики',                    'Чарльз Петцольд');
