@@ -94,21 +94,49 @@
       }
 
       function promptAddBook() {
-        let book   = prompt('Название книги:') ?? 'ничего';
-        let author = prompt('Имя автора:')     ?? 'ничего';
+        let book   = prompt('Название книги:') ?? null;
+        let author = prompt('Имя автора:')     ?? null;
 
+        if (book == null || author == null || !verifyInputs(book, author) ) return null;
+        
         appendBook(book, author);
 
         add(books, library, books.at(-1) );
       }
 
       function promptAddFilm() {
-        let film = prompt('Название фильма:') ?? 'ничего';
-        let year = prompt('Год выпуска:')     ?? 'ничего';
+        let film = prompt('Название фильма:') ?? null;
+        let year = prompt('Год выпуска:')     ?? null;
+        
+        if (film == null || year == null ||
+            !verifyInputs(null, null, film, year) )
+        {
+          return null
+        }
 
         appendFilm(film, year);
 
         add(films, collection, films.at(-1) );
+      }
+
+      function verifyInputs(book, author, film, year) {
+        if (/^\s+$/.exec(book) || /^\s+$/.exec(author) ||
+            /^\s+$/.exec(film) || /^\s+$/.exec(year) )
+        {
+          return null
+        }
+
+        if (book && author) {
+          if (author.match(/\d+/) ) return null;
+
+          return true
+        }
+
+        if (film && year) {
+          if (!year.match(/\d{4}/) ) return null;
+
+          return true
+        }
       }
       
       class Book {
